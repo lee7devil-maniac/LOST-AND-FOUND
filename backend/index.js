@@ -19,17 +19,31 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Enable CORS
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'http://localhost:5173',
+    'http://localhost:3000'
+];
+
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl) 
-        // or any localhost origin during development
-        if (!origin || origin.startsWith('http://localhost:')) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+
+        const isAllowed = allowedOrigins.includes(origin) ||
+            origin.endsWith('.vercel.app') ||
+            origin.startsWith('http://localhost:');
+
+        if (isAllowed) {
             callback(null, true);
         } else {
+            console.log('CORS Blocked for origin:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Set static folder
