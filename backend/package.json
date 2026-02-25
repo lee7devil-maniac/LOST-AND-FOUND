@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "cleanup": "node cleanup.js",
+    "factory-reset": "node reset-database.js",
     "test": "echo \"Error: no test msg\" && exit 1"
   },
   "keywords": [],
