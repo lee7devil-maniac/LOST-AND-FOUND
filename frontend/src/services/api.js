@@ -6,6 +6,11 @@ const api = axios.create({
     withCredentials: true,
 });
 
+console.log('--- SYSTEM CONNECTIVITY AUDIT ---');
+console.log('API Target:', API_BASE_URL);
+console.log('Mode:', import.meta.env.MODE);
+console.log('--------------------------------');
+
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     if (token) {
