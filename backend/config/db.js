@@ -2,22 +2,24 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
+        const uri = process.env.MONGO_URI;
+        if (!uri) {
+            console.error('CRITICAL: MONGO_URI is not defined in environment variables');
+            return;
+        }
+
+        // Mask credentials for safe logging
+        const maskedUri = uri.replace(/\/\/.*@/, '//****:****@');
+        console.log(`Attempting to connect to MongoDB: ${maskedUri}`);
+
         mongoose.connection.on('error', err => {
             console.error('Mongoose connection error:', err);
         });
 
-        mongoose.connection.on('disconnected', () => {
-            console.log('Mongoose disconnected');
-        });
-
-        mongoose.connection.on('reconnected', () => {
-            console.log('Mongoose reconnected');
-        });
-
-        const conn = await mongoose.connect(process.env.MONGO_URI, {
+        const conn = await mongoose.connect(uri, {
             serverSelectionTimeoutMS: 5000,
             socketTimeoutMS: 45000,
-            bufferCommands: true,
+            bufferCommands: false, // Fail fast if not connected
         });
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (err) {

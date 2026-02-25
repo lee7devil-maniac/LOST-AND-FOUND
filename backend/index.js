@@ -72,7 +72,11 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    console.log('--- SYSTEM INITIALIZATION ---');
+    console.log(`Server: Running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV}`);
+    console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
+    console.log('-----------------------------');
 });
 
 // Handle unhandled promise rejections
