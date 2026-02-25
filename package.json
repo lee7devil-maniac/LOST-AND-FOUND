@@ -1,0 +1,8 @@
+{
+    "name": "mcc-lost-n-found",
+    "private": true,
+    "scripts": {
+        "frontend:build": "cd frontend && npm install && npm run build",
+        "build": "npm run frontend:build"
+    }
+}
