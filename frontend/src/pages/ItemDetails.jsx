@@ -70,8 +70,8 @@ const ItemDetails = () => {
                             <>
                                 <img
                                     src={(item.images && item.images.length > 0)
-                                        ? (item.images[activeImage]?.startsWith('http') ? item.images[activeImage] : `${IMAGE_BASE_URL}${item.images[activeImage]}`)
-                                        : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl}`)}
+                                        ? (item.images[activeImage]?.startsWith('http') ? item.images[activeImage] : `${IMAGE_BASE_URL}${item.images[activeImage]?.replace(/^\/?uploads\//, '')}`)
+                                        : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl?.replace(/^\/?uploads\//, '')}`)}
                                     alt=""
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     onError={(e) => {
@@ -103,7 +103,7 @@ const ItemDetails = () => {
                                         }`}
                                 >
                                     <img
-                                        src={img.startsWith('http') ? img : `${IMAGE_BASE_URL}${img}`}
+                                        src={img.startsWith('http') ? img : `${IMAGE_BASE_URL}${img.replace(/^\/?uploads\//, '')}`}
                                         className="w-full h-full object-cover"
                                         alt=""
                                     />

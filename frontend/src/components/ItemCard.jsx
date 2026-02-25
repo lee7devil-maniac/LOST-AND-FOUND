@@ -11,8 +11,8 @@ const ItemCard = ({ item, onDelete }) => {
                 {(item.images?.length > 0 || item.imageUrl) ? (
                     <img
                         src={item.images?.length > 0
-                            ? (item.images[0].startsWith('http') ? item.images[0] : `${IMAGE_BASE_URL}${item.images[0]}`)
-                            : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl}`)}
+                            ? (item.images[0].startsWith('http') ? item.images[0] : `${IMAGE_BASE_URL}${item.images[0].replace(/^\/?uploads\//, '')}`)
+                            : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl?.replace(/^\/?uploads\//, '')}`)}
                         alt=""
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {

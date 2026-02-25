@@ -26,13 +26,7 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Set security headers - Optimized for ORB resolution
-app.use(helmet({
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
-
-// Enable CORS
+// Enable CORS - Early initialization
 const allowedOrigins = [
     process.env.FRONTEND_URL,
     'http://localhost:5173',
@@ -41,23 +35,25 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
-
         const isAllowed = allowedOrigins.includes(origin) ||
             origin.endsWith('.vercel.app') ||
             origin.startsWith('http://localhost:');
-
         if (isAllowed) {
             callback(null, true);
         } else {
-            console.log('CORS Blocked for origin:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Set security headers - Optimized for ORB resolution
+app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Set static folder with robust security headers for ORB/CORS
@@ -89,8 +85,8 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
     }
 
     try {
-        // Return local path relative to root
-        const imageUrl = `/uploads/${req.file.filename}`;
+        // Return only the filename - Frontend will prepend IMAGE_BASE_URL (/uploads/)
+        const imageUrl = req.file.filename;
 
         res.status(200).json({
             success: true,
@@ -111,7 +107,7 @@ app.post('/api/upload/multiple', upload.array('images', 5), async (req, res) => 
     }
 
     try {
-        const urls = req.files.map(file => `/uploads/${file.filename}`);
+        const urls = req.files.map(file => file.filename);
 
         console.log(`Multiple images uploaded locally: ${urls.length} files`);
         res.status(200).json({
