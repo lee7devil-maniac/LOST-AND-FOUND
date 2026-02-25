@@ -52,8 +52,14 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Set static folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Set static folder with security headers for ORB
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, path) => {
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.set('X-Content-Type-Options', 'nosniff');
+    }
+}));
 
 // Mount routers
 app.use('/api/auth', require('./routes/auth'));
@@ -72,23 +78,18 @@ app.post('/api/upload', upload.single('image'), async (req, res) => {
     }
 
     try {
-        // Upload to Cloudinary
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'mcc_lost_found'
-        });
-
-        // Delete local file
-        fs.unlinkSync(req.file.path);
+        // Return local path relative to root
+        const imageUrl = `/uploads/${req.file.filename}`;
 
         res.status(200).json({
             success: true,
-            data: result.secure_url
+            data: imageUrl
         });
     } catch (error) {
-        console.error('Cloudinary Upload Error:', error);
+        console.error('Local Upload Error:', error);
         res.status(500).json({
             success: false,
-            message: 'Error uploading to cloud storage'
+            message: 'Error saving image locally'
         });
     }
 });
@@ -99,30 +100,18 @@ app.post('/api/upload/multiple', upload.array('images', 5), async (req, res) => 
     }
 
     try {
-        const uploadPromises = req.files.map(async (file) => {
-            // Upload to Cloudinary
-            const result = await cloudinary.uploader.upload(file.path, {
-                folder: 'mcc_lost_found'
-            });
+        const urls = req.files.map(file => `/uploads/${file.filename}`);
 
-            // Delete local file
-            fs.unlinkSync(file.path);
-
-            return result.secure_url;
-        });
-
-        const urls = await Promise.all(uploadPromises);
-
-        console.log(`Multiple images uploaded: ${urls.length} files`);
+        console.log(`Multiple images uploaded locally: ${urls.length} files`);
         res.status(200).json({
             success: true,
             data: urls
         });
     } catch (error) {
-        console.error('Cloudinary Multiple Upload Error:', error);
+        console.error('Local Multiple Upload Error:', error);
         res.status(500).json({
             success: false,
-            message: 'Error uploading to cloud storage'
+            message: 'Error saving images locally'
         });
     }
 });
