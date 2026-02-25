@@ -11,20 +11,23 @@ const ItemCard = ({ item, onDelete }) => {
                 {item.imageUrl ? (
                     <img
                         src={`${IMAGE_BASE_URL}${item.imageUrl}`}
-                        alt={item.title}
+                        alt=""
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                        }}
                     />
-                ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-center px-4">
-                        <span className="text-gray-500 italic text-sm font-medium">No Preview Image</span>
-                    </div>
-                )}
+                ) : null}
+                <div className={`w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-center px-4 ${item.imageUrl ? 'hidden' : 'flex'}`}>
+                    <span className="text-gray-400 italic text-[10px] font-bold uppercase tracking-widest">No Preview Intel</span>
+                </div>
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex gap-2">
                     <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${item.type === 'lost'
-                            ? 'bg-red-500 text-white'
-                            : 'bg-emerald-500 text-white'
+                        ? 'bg-red-500 text-white'
+                        : 'bg-emerald-500 text-white'
                         }`}>
                         {item.type}
                     </span>

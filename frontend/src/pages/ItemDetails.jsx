@@ -66,7 +66,21 @@ const ItemDetails = () => {
                 <div className="space-y-6">
                     <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-soft overflow-hidden group">
                         {item.imageUrl ? (
-                            <img src={`${IMAGE_BASE_URL}${item.imageUrl}`} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <>
+                                <img
+                                    src={`${IMAGE_BASE_URL}${item.imageUrl}`}
+                                    alt=""
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                        e.target.nextSibling.style.display = 'flex';
+                                    }}
+                                />
+                                <div className="hidden w-full h-full flex flex-col items-center justify-center text-gray-300 gap-4">
+                                    <AlertCircle size={64} />
+                                    <span className="font-bold uppercase tracking-widest text-xs">Visual Intel Unavailable</span>
+                                </div>
+                            </>
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 gap-4">
                                 <AlertCircle size={64} />
