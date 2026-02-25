@@ -28,38 +28,38 @@ const Dashboard = () => {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header Section */}
-            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
+            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                 <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mcc-maroon/10 text-mcc-maroon text-[10px] font-bold uppercase tracking-widest">
                         <AlertCircle size={12} /> Live Updates
                     </div>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
                         Discovery <span className="text-mcc-maroon">Hub</span>
                     </h1>
-                    <p className="text-gray-500 max-w-md">
+                    <p className="text-sm sm:text-base text-gray-500 max-w-md">
                         Real-time feed of reported items across campus. Help your fellow MCCians find what they've lost.
                     </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
-                    <div className="relative group">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <div className="relative group flex-1">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-mcc-maroon transition-colors" size={20} />
                         <input
                             type="text"
-                            placeholder="Search by name, location..."
-                            className="bg-gray-50 border-none rounded-2xl py-3 pl-12 pr-6 focus:ring-2 focus:ring-mcc-maroon/20 w-full md:w-64 text-sm transition-all"
+                            placeholder="Search by name..."
+                            className="bg-gray-50 border-none rounded-2xl py-3 pl-12 pr-6 focus:ring-2 focus:ring-mcc-maroon/20 w-full lg:w-48 xl:w-64 text-sm transition-all"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-row items-center gap-3">
                         <select
-                            className="bg-gray-50 border-none rounded-2xl py-3 pl-4 pr-10 focus:ring-2 focus:ring-mcc-maroon/20 text-sm appearance-none cursor-pointer"
+                            className="flex-1 bg-gray-50 border-none rounded-2xl py-3 pl-4 pr-10 focus:ring-2 focus:ring-mcc-maroon/20 text-sm appearance-none cursor-pointer"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                         >
-                            <option value="">All Categories</option>
+                            <option value="">Categories</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Books">Books</option>
                             <option value="Clothing">Clothing</option>
@@ -68,8 +68,8 @@ const Dashboard = () => {
                             <option value="Other">Other</option>
                         </select>
 
-                        <Link to="/report" className="bg-mcc-maroon hover:bg-mcc-dark text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-mcc-maroon/30 transition-all hover:scale-105 active:scale-95">
-                            <Plus size={20} /> Report Item
+                        <Link to="/report" className="shrink-0 bg-mcc-maroon hover:bg-mcc-dark text-white px-5 sm:px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-mcc-maroon/30 transition-all hover:scale-105 active:scale-95 text-sm sm:text-base">
+                            <Plus size={20} /> <span className="hidden xs:inline">Report</span>
                         </Link>
                     </div>
                 </div>

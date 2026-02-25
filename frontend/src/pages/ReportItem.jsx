@@ -64,37 +64,37 @@ const ReportItem = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            <header className="flex items-center justify-between">
+        <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
+            <header className="flex items-center justify-between px-2 sm:px-0">
                 <div>
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center gap-1 text-sm font-bold text-gray-400 hover:text-mcc-maroon transition-colors mb-2 uppercase tracking-widest"
+                        className="flex items-center gap-1 text-xs sm:text-sm font-bold text-gray-400 hover:text-mcc-maroon transition-colors mb-2 uppercase tracking-widest"
                     >
                         <ChevronLeft size={16} /> Back to Hub
                     </button>
-                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">
+                    <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">
                         Post a <span className="text-mcc-maroon">Report</span>
                     </h1>
                 </div>
             </header>
 
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
+            <form onSubmit={handleSubmit} className="flex flex-col lg:grid lg:grid-cols-3 gap-6 sm:gap-8 pb-12">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft space-y-8">
+                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-soft space-y-6 sm:space-y-8">
                         {/* Type Toggle */}
                         <div className="flex p-1 bg-gray-50 rounded-2xl">
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, type: 'lost' })}
-                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'lost' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-400'}`}
+                                className={`flex-1 py-3 rounded-xl font-bold transition-all text-sm sm:text-base ${formData.type === 'lost' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-400'}`}
                             >
                                 Lost Item
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, type: 'found' })}
-                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'found' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400'}`}
+                                className={`flex-1 py-3 rounded-xl font-bold transition-all text-sm sm:text-base ${formData.type === 'found' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400'}`}
                             >
                                 Found Item
                             </button>
@@ -102,15 +102,15 @@ const ReportItem = () => {
 
                         <div className="space-y-6">
                             <div className="relative">
-                                <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
+                                <label className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
                                     <Tag size={14} /> Item Name
                                 </label>
                                 <input
                                     name="title"
                                     type="text"
                                     required
-                                    placeholder="e.g., MacBook Pro 14 with stickers"
-                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
+                                    placeholder="e.g., MacBook Pro 14"
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium text-sm sm:text-base"
                                     value={formData.title}
                                     onChange={handleChange}
                                 />
@@ -118,12 +118,12 @@ const ReportItem = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="relative">
-                                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
+                                    <label className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
                                         <Info size={14} /> Category
                                     </label>
                                     <select
                                         name="category"
-                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 appearance-none cursor-pointer"
+                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 appearance-none cursor-pointer text-sm sm:text-base"
                                         value={formData.category}
                                         onChange={handleChange}
                                     >
@@ -136,15 +136,15 @@ const ReportItem = () => {
                                     </select>
                                 </div>
                                 <div className="relative">
-                                    <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
+                                    <label className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
                                         <MapPin size={14} /> Last seen Location
                                     </label>
                                     <input
                                         name="location"
                                         type="text"
                                         required
-                                        placeholder="e.g., Pavilion, Library"
-                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
+                                        placeholder="e.g., Library"
+                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium text-sm sm:text-base"
                                         value={formData.location}
                                         onChange={handleChange}
                                     />
@@ -152,15 +152,15 @@ const ReportItem = () => {
                             </div>
 
                             <div className="relative">
-                                <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
+                                <label className="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">
                                     Detailed Description
                                 </label>
                                 <textarea
                                     name="description"
                                     rows="5"
                                     required
-                                    placeholder="Provide any unique identifying marks, brand names, or specific details..."
-                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium resize-none"
+                                    placeholder="Provide any unique identifying marks..."
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium resize-none text-sm sm:text-base"
                                     value={formData.description}
                                     onChange={handleChange}
                                 ></textarea>
@@ -171,16 +171,16 @@ const ReportItem = () => {
 
                 <div className="space-y-6">
                     {/* Image Upload Box */}
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
-                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-1">Media Assets</label>
-                        <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-soft">
+                        <label className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-1">Media Assets</label>
+                        <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-2 gap-4">
                             {previews.map((prev, index) => (
                                 <div key={index} className="relative group overflow-hidden bg-gray-50 border-2 border-gray-100 rounded-2xl aspect-square">
                                     <img src={prev} alt={`Preview ${index}`} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
                                     <button
                                         type="button"
                                         onClick={() => removeImage(index)}
-                                        className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                        className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                                     >
                                         <X size={14} />
                                     </button>
@@ -188,11 +188,11 @@ const ReportItem = () => {
                             ))}
                             {previews.length < 5 && (
                                 <div className="relative group overflow-hidden bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl aspect-square flex flex-col items-center justify-center cursor-pointer transition-all hover:border-mcc-maroon/50">
-                                    <div className="flex flex-col items-center text-center p-4">
-                                        <div className="w-10 h-10 bg-white text-mcc-maroon rounded-xl flex items-center justify-center shadow-soft mb-2 group-hover:scale-110 transition-transform">
-                                            <Plus size={24} />
+                                    <div className="flex flex-col items-center text-center p-2 sm:p-4">
+                                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white text-mcc-maroon rounded-xl flex items-center justify-center shadow-soft mb-2 group-hover:scale-110 transition-transform">
+                                            <Plus size={20} />
                                         </div>
-                                        <p className="text-[10px] font-bold text-gray-900">Add Image</p>
+                                        <p className="text-[8px] sm:text-[10px] font-bold text-gray-900">Add Image</p>
                                     </div>
                                     <input
                                         type="file"
@@ -210,16 +210,16 @@ const ReportItem = () => {
                     </div>
 
                     {/* Submit Actions */}
-                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
+                    <div className="bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                         <div className="space-y-4">
                             <button
                                 type="submit"
                                 disabled={uploading}
-                                className="w-full bg-mcc-maroon text-white font-black py-4 rounded-2xl shadow-lg shadow-mcc-maroon/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                                className="w-full bg-mcc-maroon text-white font-black py-4 rounded-2xl shadow-lg shadow-mcc-maroon/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm sm:text-base"
                             >
                                 {uploading ? 'Processing...' : <><Plus size={20} /> Publish Report</>}
                             </button>
-                            <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest leading-relaxed">
+                            <p className="text-[9px] sm:text-[10px] text-gray-400 text-center uppercase tracking-widest leading-relaxed">
                                 Your report will be visible to all verified students immediately.
                             </p>
                         </div>

@@ -7,7 +7,7 @@ const ItemCard = ({ item, onDelete }) => {
     return (
         <div className="group relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-2xl hover:shadow-mcc-maroon/10 transition-all duration-500 transform hover:-translate-y-2">
             {/* Image Section */}
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-48 sm:h-56 overflow-hidden">
                 {(item.images?.length > 0 || item.imageUrl) ? (
                     <img
                         src={item.images?.length > 0
@@ -26,27 +26,27 @@ const ItemCard = ({ item, onDelete }) => {
                 </div>
 
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex gap-2">
-                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${item.type === 'lost'
+                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex gap-2">
+                    <span className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm ${item.type === 'lost'
                         ? 'bg-red-500 text-white'
                         : 'bg-emerald-500 text-white'
                         }`}>
                         {item.type}
                     </span>
-                    <span className="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm bg-white/90 text-gray-700 backdrop-blur-sm">
+                    <span className="px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shadow-sm bg-white/90 text-gray-700 backdrop-blur-sm">
                         {item.category}
                     </span>
                 </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                    <Link to={`/items/${item._id}`} className="w-full bg-white text-gray-900 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-gray-50">
-                        View Item <ArrowRight size={18} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-6">
+                    <Link to={`/items/${item._id}`} className="w-full bg-white text-gray-900 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl font-bold flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 hover:bg-gray-50 text-sm">
+                        View Item <ArrowRight size={16} />
                     </Link>
                 </div>
             </div>
 
             {/* Content Section */}
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
                 <div className="flex justify-between items-start mb-3">
                     <h3 className="text-lg font-bold text-gray-900 group-hover:text-mcc-maroon transition-colors line-clamp-1">
                         {item.title}

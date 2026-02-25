@@ -6,12 +6,12 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 
 const MainLayout = () => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 1024);
 
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 overflow-x-hidden">
             <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
             <main className={twMerge(
@@ -20,7 +20,7 @@ const MainLayout = () => {
                     isSidebarOpen ? "lg:ml-72" : "ml-0"
                 )
             )}>
-                <div className="p-4 md:p-8 max-w-7xl mx-auto">
+                <div className="p-4 md:p-8 max-w-7xl mx-auto w-full overflow-x-hidden">
                     <Outlet />
                 </div>
             </main>
