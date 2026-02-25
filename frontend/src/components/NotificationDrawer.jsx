@@ -22,22 +22,22 @@ const NotificationDrawer = ({ isOpen, onClose, notifications = [] }) => {
 
             <div className={twMerge(
                 clsx(
-                    "fixed top-0 right-0 z-[70] h-full w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl transition-transform duration-500 ease-in-out",
+                    "fixed top-0 right-0 z-[70] h-full w-full max-w-sm bg-white shadow-2xl transition-transform duration-500 ease-in-out",
                     isOpen ? "translate-x-0" : "translate-x-full"
                 )
             )}>
                 <div className="flex flex-col h-full">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-slate-800">
+                    <div className="flex items-center justify-between p-6 border-b border-gray-100">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-mcc-maroon/10 rounded-lg flex items-center justify-center text-mcc-maroon">
                                 <Bell size={18} />
                             </div>
-                            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Activity Feed</h2>
+                            <h2 className="text-lg font-bold text-gray-900">Activity Feed</h2>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 transition-colors"
+                            className="p-2 rounded-xl hover:bg-gray-100 text-gray-500 transition-colors"
                         >
                             <X size={20} />
                         </button>
@@ -58,8 +58,8 @@ const NotificationDrawer = ({ isOpen, onClose, notifications = [] }) => {
                                         clsx(
                                             "p-4 rounded-2xl border transition-all cursor-pointer group hover:shadow-soft",
                                             notif.isRead
-                                                ? "bg-white dark:bg-slate-900 border-gray-100 dark:border-slate-800 opacity-60"
-                                                : "bg-mcc-maroon/[0.03] dark:bg-mcc-maroon/5 border-mcc-maroon/10"
+                                                ? "bg-white border-gray-100 opacity-60"
+                                                : "bg-mcc-maroon/[0.03] border-mcc-maroon/10"
                                         )
                                     )}
                                 >
@@ -73,7 +73,7 @@ const NotificationDrawer = ({ isOpen, onClose, notifications = [] }) => {
                                             {notif.type === 'claim' ? <AlertCircle size={20} /> : <CheckCircle2 size={20} />}
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-xs font-semibold text-gray-900 dark:text-white leading-tight">
+                                            <p className="text-xs font-semibold text-gray-900 leading-tight">
                                                 {notif.message}
                                             </p>
                                             <div className="flex items-center gap-1.5 text-[10px] text-gray-400">
@@ -88,8 +88,8 @@ const NotificationDrawer = ({ isOpen, onClose, notifications = [] }) => {
                     </div>
 
                     {/* Footer */}
-                    <div className="p-6 border-t border-gray-100 dark:border-slate-800">
-                        <button className="w-full bg-gray-50 dark:bg-slate-800 py-3 rounded-xl text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors">
+                    <div className="p-6 border-t border-gray-100">
+                        <button className="w-full bg-gray-50 py-3 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-100 transition-colors">
                             Mark all as read
                         </button>
                     </div>

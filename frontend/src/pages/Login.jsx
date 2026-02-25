@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { LogIn, Mail, Lock, ArrowRight, ShieldCheck } from 'lucide-react';
 
 const Login = () => {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
@@ -13,13 +13,13 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        const success = await login(email, password);
+        const success = await login(username, password);
         setIsLoading(false);
         if (success) navigate('/dashboard');
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 px-4 py-12 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 relative overflow-hidden">
             {/* Background Decorative Elements */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-mcc-maroon/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-mcc-maroon/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
@@ -29,38 +29,38 @@ const Login = () => {
                     <div className="w-16 h-16 bg-mcc-maroon rounded-3xl flex items-center justify-center text-white mx-auto shadow-2xl shadow-mcc-maroon/30 mb-8 transform hover:rotate-12 transition-transform duration-300">
                         <ShieldCheck size={32} />
                     </div>
-                    <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-                        Log in to <span className="text-mcc-maroon">Nexus</span>
+                    <h2 className="text-4xl font-black text-gray-900 tracking-tight">
+                        Log in to <span className="text-mcc-maroon">MCC Lost 'n' Found</span>
                     </h2>
-                    <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 font-medium tracking-wide flex items-center justify-center gap-2">
+                    <p className="mt-3 text-sm text-gray-500 font-medium tracking-wide flex items-center justify-center gap-2">
                         MCC Community Access <span className="w-1.5 h-1.5 bg-mcc-maroon rounded-full animate-pulse"></span>
                     </p>
                 </div>
 
-                <form className="mt-10 space-y-6 bg-white dark:bg-slate-900 p-10 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 shadow-soft" onSubmit={handleSubmit}>
+                <form className="mt-10 space-y-6 bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-soft" onSubmit={handleSubmit}>
                     <div className="space-y-5">
                         <div className="group">
-                            <label className="block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-2 px-1">Institutional Email</label>
+                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Username</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-mcc-maroon transition-colors" size={20} />
                                 <input
-                                    type="email"
+                                    type="text"
                                     required
-                                    className="w-full bg-gray-50 dark:bg-slate-950 border-none rounded-2xl py-4 pl-12 pr-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium placeholder:text-gray-300 dark:placeholder:text-gray-700"
-                                    placeholder="yourname@mcc.edu.in"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium placeholder:text-gray-300"
+                                    placeholder="Enter username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
                         </div>
                         <div className="group">
-                            <label className="block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-2 px-1">Secure Password</label>
+                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 px-1">Secure Password</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-mcc-maroon transition-colors" size={20} />
                                 <input
                                     type="password"
                                     required
-                                    className="w-full bg-gray-50 dark:bg-slate-950 border-none rounded-2xl py-4 pl-12 pr-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium placeholder:text-gray-300 dark:placeholder:text-gray-700"
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 pl-12 pr-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium placeholder:text-gray-300"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -90,7 +90,7 @@ const Login = () => {
                     </button>
 
                     <div className="text-center pt-2">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500">
                             New on campus?{' '}
                             <Link to="/register" className="font-black text-mcc-maroon hover:text-mcc-dark transition-colors uppercase tracking-widest text-[10px]">
                                 Join the network

@@ -7,19 +7,13 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Please provide your name'],
         trim: true
     },
-    registerNumber: {
+    username: {
         type: String,
-        required: [true, 'Please provide your register number'],
-        unique: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        required: [true, 'Please provide your MCC email'],
+        required: [true, 'Please provide a unique username'],
         unique: true,
         trim: true,
         lowercase: true,
-        match: [/^\w+([\.-]?\w+)*@mcc\.edu\.in$/, 'Please use a valid MCC email address (@mcc.edu.in)']
+        minlength: [3, 'Username must be at least 3 characters']
     },
     password: {
         type: String,
@@ -34,13 +28,12 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
+userSchema.pre('save', async function () {
+    if (!this.isModified('password')) return;
     this.password = await bcrypt.hash(this.password, 12);
-    next();
 });
 
-userSchema.methods.comparePassword = async function(candidatePassword, userPassword) {
+userSchema.methods.comparePassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword);
 };
 

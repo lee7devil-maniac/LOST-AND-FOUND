@@ -36,7 +36,7 @@ exports.getClaims = async (req, res, next) => {
 
         // Get claims for those items
         const claims = await Claim.find({ item: { $in: itemIds } })
-            .populate('claimant', 'name registerNumber email')
+            .populate('claimant', 'name email username')
             .populate('item', 'title type');
 
         res.status(200).json({ success: true, data: claims });

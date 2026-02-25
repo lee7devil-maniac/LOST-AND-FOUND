@@ -28,15 +28,15 @@ const Dashboard = () => {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header Section */}
-            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-soft">
+            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                 <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mcc-maroon/10 text-mcc-maroon text-[10px] font-bold uppercase tracking-widest">
                         <AlertCircle size={12} /> Live Updates
                     </div>
-                    <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">
                         Discovery <span className="text-mcc-maroon">Hub</span>
                     </h1>
-                    <p className="text-gray-500 dark:text-gray-400 max-w-md">
+                    <p className="text-gray-500 max-w-md">
                         Real-time feed of reported items across campus. Help your fellow MCCians find what they've lost.
                     </p>
                 </div>
@@ -47,7 +47,7 @@ const Dashboard = () => {
                         <input
                             type="text"
                             placeholder="Search by name, location..."
-                            className="bg-gray-50 dark:bg-slate-900 border-none rounded-2xl py-3 pl-12 pr-6 focus:ring-2 focus:ring-mcc-maroon/20 w-full md:w-64 text-sm transition-all"
+                            className="bg-gray-50 border-none rounded-2xl py-3 pl-12 pr-6 focus:ring-2 focus:ring-mcc-maroon/20 w-full md:w-64 text-sm transition-all"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -55,7 +55,7 @@ const Dashboard = () => {
 
                     <div className="flex items-center gap-3">
                         <select
-                            className="bg-gray-50 dark:bg-slate-900 border-none rounded-2xl py-3 pl-4 pr-10 focus:ring-2 focus:ring-mcc-maroon/20 text-sm appearance-none cursor-pointer"
+                            className="bg-gray-50 border-none rounded-2xl py-3 pl-4 pr-10 focus:ring-2 focus:ring-mcc-maroon/20 text-sm appearance-none cursor-pointer"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                         >
@@ -79,15 +79,15 @@ const Dashboard = () => {
             {loading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-                        <div key={n} className="h-80 bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-slate-800 animate-pulse"></div>
+                        <div key={n} className="h-80 bg-white rounded-3xl border border-gray-100 animate-pulse"></div>
                     ))}
                 </div>
             ) : items.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-800 rounded-[2rem] border border-dashed border-gray-200 dark:border-slate-700 text-center">
-                    <div className="w-20 h-20 bg-gray-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center mb-6 text-gray-300">
+                <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] border border-dashed border-gray-200 text-center">
+                    <div className="w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center mb-6 text-gray-300">
                         <Search size={40} />
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No items found</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">No items found</h2>
                     <p className="text-gray-500 max-w-xs mx-auto mb-8">Try adjusting your filters or search terms to find what you're looking for.</p>
                 </div>
             ) : (

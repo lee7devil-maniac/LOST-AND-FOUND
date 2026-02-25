@@ -21,8 +21,7 @@ const sendTokenResponse = (user, statusCode, res) => {
         user: {
             id: user._id,
             name: user.name,
-            email: user.email,
-            registerNumber: user.registerNumber,
+            username: user.username,
             role: user.role
         }
     });
@@ -30,22 +29,29 @@ const sendTokenResponse = (user, statusCode, res) => {
 
 exports.register = async (req, res, next) => {
     try {
-        const { name, registerNumber, email, password } = req.body;
-        const user = await User.create({ name, registerNumber, email, password });
+        console.log('Incoming Register Request:', req.body);
+        const { name, username, password } = req.body;
+        const user = await User.create({ name, username, password });
+        console.log('User created successfully:', user._id);
         sendTokenResponse(user, 201, res);
     } catch (err) {
-        next(err);
+        console.error('Registration Error:', err);
+        if (typeof next === 'function') {
+            next(err);
+        } else {
+            res.status(500).json({ success: false, message: 'Server synchronization error' });
+        }
     }
 };
 
 exports.login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Please provide email and password' });
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: 'Please provide username and password' });
         }
 
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ username }).select('+password');
         if (!user || !(await user.comparePassword(password, user.password))) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }

@@ -7,8 +7,13 @@ exports.getItems = async (req, res, next) => {
         const removeFields = ['select', 'sort', 'page', 'limit', 'search'];
         removeFields.forEach(param => delete reqQuery[param]);
 
+        // Remove empty strings from query
+        Object.keys(reqQuery).forEach(key => {
+            if (reqQuery[key] === '') delete reqQuery[key];
+        });
+
         let queryStr = JSON.stringify(reqQuery);
-        query = Item.find(JSON.parse(queryStr)).populate('postedBy', 'name registerNumber');
+        query = Item.find(JSON.parse(queryStr)).populate('postedBy', 'name username');
 
         if (req.query.search) {
             query = query.find({
@@ -35,7 +40,7 @@ exports.getItems = async (req, res, next) => {
 
 exports.getItem = async (req, res, next) => {
     try {
-        const item = await Item.findById(req.params.id).populate('postedBy', 'name registerNumber');
+        const item = await Item.findById(req.params.id).populate('postedBy', 'name username');
         if (!item) return res.status(404).json({ message: 'Item not found' });
         res.status(200).json({ success: true, data: item });
     } catch (err) {
@@ -78,8 +83,17 @@ exports.deleteItem = async (req, res, next) => {
             return res.status(401).json({ message: 'User not authorized to delete this item' });
         }
 
-        await item.deleteOne();
+        await Item.findByIdAndDelete(req.params.id);
         res.status(200).json({ success: true, data: {} });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.getMyItems = async (req, res, next) => {
+    try {
+        const items = await Item.find({ postedBy: req.user.id }).sort('-createdAt');
+        res.status(200).json({ success: true, count: items.length, data: items });
     } catch (err) {
         next(err);
     }

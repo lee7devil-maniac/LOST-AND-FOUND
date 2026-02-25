@@ -41,10 +41,10 @@ const AdminPanel = () => {
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-mcc-maroon/10 text-mcc-maroon text-[10px] font-bold uppercase tracking-widest mb-2">
                         <Shield size={12} /> Restricted Access
                     </div>
-                    <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
-                        Admin <span className="text-mcc-maroon">Nexus</span>
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">
+                        Admin <span className="text-mcc-maroon">Lost 'n' Found</span>
                     </h1>
-                    <p className="text-gray-500 dark:text-gray-400">Moderating campus activity and system health.</p>
+                    <p className="text-gray-500">Moderating campus activity and system health.</p>
                 </div>
             </header>
 
@@ -55,7 +55,7 @@ const AdminPanel = () => {
                     { label: 'Verified Users', value: stats.users, color: 'text-blue-600', bg: 'bg-blue-50' },
                     { label: 'Pending Claims', value: stats.claims, color: 'text-emerald-600', bg: 'bg-emerald-50' }
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-soft">
+                    <div key={i} className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
                         <p className={`text-4xl font-black ${stat.color}`}>{stat.value}</p>
                     </div>
@@ -63,22 +63,22 @@ const AdminPanel = () => {
             </div>
 
             {/* Management Table */}
-            <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 shadow-soft overflow-hidden">
-                <div className="p-8 border-b border-gray-50 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Active Reports Management</h3>
+            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-soft overflow-hidden">
+                <div className="p-8 border-b border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <h3 className="text-xl font-bold text-gray-900">Active Reports Management</h3>
                     <div className="relative group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-mcc-maroon transition-colors" size={18} />
                         <input
                             type="text"
                             placeholder="Search records..."
-                            className="bg-gray-50 dark:bg-slate-900 border-none rounded-2xl py-2.5 pl-11 pr-6 text-sm w-full md:w-64"
+                            className="bg-gray-50 border-none rounded-2xl py-2.5 pl-11 pr-6 text-sm w-full md:w-64"
                         />
                     </div>
                 </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-                        <thead className="bg-gray-50/50 dark:bg-slate-900/50 border-b border-gray-50 dark:border-slate-700">
+                        <thead className="bg-gray-50/50 border-b border-gray-50">
                             <tr>
                                 <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Identity / Item</th>
                                 <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Reporter</th>
@@ -86,30 +86,30 @@ const AdminPanel = () => {
                                 <th className="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Moderation</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-50 dark:divide-slate-800">
+                        <tbody className="divide-y divide-gray-50">
                             {items.map((item) => (
-                                <tr key={item._id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
+                                <tr key={item._id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-gray-100 dark:bg-slate-900 rounded-xl flex items-center justify-center overflow-hidden">
+                                            <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
                                                 {item.imageUrl ? <img src={`http://localhost:5000${item.imageUrl}`} alt="" className="w-full h-full object-cover" /> : <Shield className="text-gray-300" size={20} />}
                                             </div>
                                             <div>
-                                                <p className="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{item.title}</p>
+                                                <p className="text-sm font-bold text-gray-900 line-clamp-1">{item.title}</p>
                                                 <p className="text-[11px] text-gray-500 font-medium italic">{item.location}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-8 py-6 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                    <td className="px-8 py-6 text-sm font-medium text-gray-600">
                                         {item.postedBy?.name}
-                                        <p className="text-[10px] text-gray-400 font-normal">{item.postedBy?.registerNumber}</p>
+                                        <p className="text-[10px] text-gray-400 font-normal">{item.postedBy?.username}</p>
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className="flex gap-2">
                                             <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${item.type === 'lost' ? 'bg-red-500/10 text-red-500' : 'bg-emerald-500/10 text-emerald-500'}`}>
                                                 {item.type}
                                             </span>
-                                            <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-gray-100 dark:bg-slate-900 text-gray-500">
+                                            <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-gray-100 text-gray-500">
                                                 {item.category}
                                             </span>
                                         </div>

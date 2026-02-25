@@ -62,7 +62,7 @@ const ReportItem = () => {
                     >
                         <ChevronLeft size={16} /> Back to Hub
                     </button>
-                    <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight">
+                    <h1 className="text-4xl font-black text-gray-900 tracking-tight">
                         Post a <span className="text-mcc-maroon">Report</span>
                     </h1>
                 </div>
@@ -70,20 +70,20 @@ const ReportItem = () => {
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-soft space-y-8">
+                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft space-y-8">
                         {/* Type Toggle */}
-                        <div className="flex p-1 bg-gray-50 dark:bg-slate-900 rounded-2xl">
+                        <div className="flex p-1 bg-gray-50 rounded-2xl">
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, type: 'lost' })}
-                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'lost' ? 'bg-white dark:bg-slate-800 text-red-600 shadow-sm' : 'text-gray-400'}`}
+                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'lost' ? 'bg-white text-red-600 shadow-sm' : 'text-gray-400'}`}
                             >
                                 Lost Item
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setFormData({ ...formData, type: 'found' })}
-                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'found' ? 'bg-white dark:bg-slate-800 text-emerald-600 shadow-sm' : 'text-gray-400'}`}
+                                className={`flex-1 py-3 rounded-xl font-bold transition-all ${formData.type === 'found' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400'}`}
                             >
                                 Found Item
                             </button>
@@ -99,7 +99,7 @@ const ReportItem = () => {
                                     type="text"
                                     required
                                     placeholder="e.g., MacBook Pro 14 with stickers"
-                                    className="w-full bg-gray-50 dark:bg-slate-900/50 border-none rounded-2xl py-4 px-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
                                     value={formData.title}
                                     onChange={handleChange}
                                 />
@@ -112,7 +112,7 @@ const ReportItem = () => {
                                     </label>
                                     <select
                                         name="category"
-                                        className="w-full bg-gray-50 dark:bg-slate-900/50 border-none rounded-2xl py-4 px-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 appearance-none cursor-pointer"
+                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 appearance-none cursor-pointer"
                                         value={formData.category}
                                         onChange={handleChange}
                                     >
@@ -133,7 +133,7 @@ const ReportItem = () => {
                                         type="text"
                                         required
                                         placeholder="e.g., Pavilion, Library"
-                                        className="w-full bg-gray-50 dark:bg-slate-900/50 border-none rounded-2xl py-4 px-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
+                                        className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium"
                                         value={formData.location}
                                         onChange={handleChange}
                                     />
@@ -149,7 +149,7 @@ const ReportItem = () => {
                                     rows="5"
                                     required
                                     placeholder="Provide any unique identifying marks, brand names, or specific details..."
-                                    className="w-full bg-gray-50 dark:bg-slate-900/50 border-none rounded-2xl py-4 px-6 text-gray-900 dark:text-white focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium resize-none"
+                                    className="w-full bg-gray-50 border-none rounded-2xl py-4 px-6 text-gray-900 focus:ring-2 focus:ring-mcc-maroon/20 transition-all font-medium resize-none"
                                     value={formData.description}
                                     onChange={handleChange}
                                 ></textarea>
@@ -160,9 +160,9 @@ const ReportItem = () => {
 
                 <div className="space-y-6">
                     {/* Image Upload Box */}
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-soft">
+                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                         <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-1">Media Assets</label>
-                        <div className="relative group overflow-hidden bg-gray-50 dark:bg-slate-900 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl aspect-square flex flex-col items-center justify-center cursor-pointer transition-all hover:border-mcc-maroon/50">
+                        <div className="relative group overflow-hidden bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl aspect-square flex flex-col items-center justify-center cursor-pointer transition-all hover:border-mcc-maroon/50">
                             {preview ? (
                                 <>
                                     <img src={preview} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
@@ -172,10 +172,10 @@ const ReportItem = () => {
                                 </>
                             ) : (
                                 <div className="flex flex-col items-center text-center p-6">
-                                    <div className="w-16 h-16 bg-white dark:bg-slate-800 text-mcc-maroon rounded-2xl flex items-center justify-center shadow-soft mb-4 group-hover:scale-110 transition-transform">
+                                    <div className="w-16 h-16 bg-white text-mcc-maroon rounded-2xl flex items-center justify-center shadow-soft mb-4 group-hover:scale-110 transition-transform">
                                         <ImageIcon size={32} />
                                     </div>
-                                    <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">Upload Photo</p>
+                                    <p className="text-sm font-bold text-gray-900 mb-1">Upload Photo</p>
                                     <p className="text-[10px] text-gray-400 uppercase tracking-widest leading-relaxed">PNG, JPG up to 5MB</p>
                                 </div>
                             )}
@@ -184,7 +184,7 @@ const ReportItem = () => {
                     </div>
 
                     {/* Submit Actions */}
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-soft">
+                    <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                         <div className="space-y-4">
                             <button
                                 type="submit"

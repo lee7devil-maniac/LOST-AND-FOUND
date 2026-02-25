@@ -9,10 +9,13 @@ import Dashboard from './pages/Dashboard';
 import ReportItem from './pages/ReportItem';
 import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
+import MyActivity from './pages/MyActivity';
+import Claims from './pages/Claims';
+import ItemDetails from './pages/ItemDetails';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-950 font-black text-mcc-maroon animate-pulse">Initializing Nexus...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-gray-50 font-black text-mcc-maroon animate-pulse">Initializing MCC Lost 'n' Found...</div>;
   if (!user) return <Navigate to="/login" />;
   if (adminOnly && user.role !== 'admin') return <Navigate to="/dashboard" />;
   return children;
@@ -21,7 +24,7 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Toaster
           position="bottom-right"
           toastOptions={{
@@ -43,11 +46,10 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/report" element={<ReportItem />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/my-posts" element={<MyActivity />} />
+            <Route path="/claims" element={<Claims />} />
+            <Route path="/items/:id" element={<ItemDetails />} />
 
-            {/* Added routes as placeholders/actual page mapping */}
-            <Route path="/search" element={<Dashboard />} />
-            <Route path="/my-posts" element={<div className="p-8 text-center opacity-40"><p className="text-sm font-black uppercase tracking-widest">Personal Archives Coming Soon</p></div>} />
-            <Route path="/claims" element={<div className="p-8 text-center opacity-40"><p className="text-sm font-black uppercase tracking-widest">Claims History Coming Soon</p></div>} />
 
             <Route path="/admin" element={<ProtectedRoute adminOnly={true}><AdminPanel /></ProtectedRoute>} />
           </Route>
