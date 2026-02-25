@@ -1,6 +1,7 @@
 import { MapPin, Clock, ArrowRight, ShieldCheck, PlusCircle, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { IMAGE_BASE_URL } from '../utils/constants';
 
 const ItemCard = ({ item, onDelete }) => {
     return (
@@ -9,7 +10,7 @@ const ItemCard = ({ item, onDelete }) => {
             <div className="relative h-56 overflow-hidden">
                 {item.imageUrl ? (
                     <img
-                        src={`http://localhost:5000${item.imageUrl}`}
+                        src={`${IMAGE_BASE_URL}${item.imageUrl}`}
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -21,10 +22,10 @@ const ItemCard = ({ item, onDelete }) => {
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex gap-2">
-                    <span className={(`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${item.type === 'lost'
-                        ? 'bg-red-500 text-white'
-                        : 'bg-emerald-500 text-white'
-                        }`)}>
+                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm ${item.type === 'lost'
+                            ? 'bg-red-500 text-white'
+                            : 'bg-emerald-500 text-white'
+                        }`}>
                         {item.type}
                     </span>
                     <span className="px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm bg-white/90 text-gray-700 backdrop-blur-sm">

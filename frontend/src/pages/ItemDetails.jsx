@@ -5,6 +5,7 @@ import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
+import { IMAGE_BASE_URL } from '../utils/constants';
 
 const ItemDetails = () => {
     const { id } = useParams();
@@ -19,7 +20,7 @@ const ItemDetails = () => {
         const fetchItem = async () => {
             try {
                 const { data } = await api.get(`/items/${id}`);
-                setItem(data.data);
+                setItem(data.data || data); // Handle both wrapped and unwrapped data
             } catch (err) {
                 toast.error('Item not found');
                 navigate('/dashboard');
@@ -50,7 +51,7 @@ const ItemDetails = () => {
     if (loading) return <div className="p-20 text-center animate-pulse text-mcc-maroon font-bold">Loading Details...</div>;
     if (!item) return null;
 
-    const isOwner = item.postedBy?._id === user?.id;
+    const isOwner = item.postedBy?._id === user?.id || item.postedBy === user?.id;
 
     return (
         <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
@@ -63,7 +64,7 @@ const ItemDetails = () => {
                 <div className="space-y-6">
                     <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-soft overflow-hidden group">
                         {item.imageUrl ? (
-                            <img src={`http://localhost:5000${item.imageUrl}`} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                            <img src={`${IMAGE_BASE_URL}${item.imageUrl}`} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                         ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 gap-4">
                                 <AlertCircle size={64} />
@@ -105,7 +106,7 @@ const ItemDetails = () => {
                         </p>
                     </div>
 
-                    {!isOwner && item.status === 'active' && (
+                    {!isOwner && item.status === 'open' && (
                         <div className="bg-mcc-maroon p-8 rounded-[2.5rem] shadow-xl shadow-mcc-maroon/20 text-white space-y-6">
                             <div className="space-y-1">
                                 <h3 className="text-2xl font-black tracking-tight">Claim this item</h3>
