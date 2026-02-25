@@ -20,9 +20,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Set security headers
-app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Set security headers - Optimized for ORB resolution
+app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 
 // Enable CORS
 const allowedOrigins = [
@@ -52,12 +60,15 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Set static folder with security headers for ORB
+// Set static folder with robust security headers for ORB/CORS
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     setHeaders: (res, path) => {
         res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
         res.set('Cross-Origin-Resource-Policy', 'cross-origin');
         res.set('X-Content-Type-Options', 'nosniff');
+        // Standard caching
+        res.set('Cache-Control', 'public, max-age=3600');
     }
 }));
 
