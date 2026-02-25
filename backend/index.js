@@ -14,6 +14,8 @@ dotenv.config();
 // Connect to database
 connectDB();
 
+const app = express();
+
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
