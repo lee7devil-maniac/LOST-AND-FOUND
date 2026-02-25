@@ -19,6 +19,7 @@ exports.sendMessage = async (req, res, next) => {
             text
         });
 
+        console.log(`Message sent from ${req.user.id} to ${receiverId} for item ${itemId}`);
         res.status(201).json({ success: true, data: message });
     } catch (err) {
         next(err);
@@ -38,10 +39,12 @@ exports.getMessages = async (req, res, next) => {
         const messages = await Message.find({
             item: itemId,
             $or: [
-                { sender: req.user.id, receiver: otherUserId },
-                { sender: otherUserId, receiver: req.user.id }
+                { sender: req.user.id.toString(), receiver: otherUserId.toString() },
+                { sender: otherUserId.toString(), receiver: req.user.id.toString() }
             ]
         }).sort({ createdAt: 1 });
+
+        console.log(`Fetched ${messages.length} messages between ${req.user.id} and ${otherUserId} for item ${itemId}`);
 
         // Mark messages as read if receiver is current user
         await Message.updateMany(
@@ -72,7 +75,14 @@ exports.getChatThreads = async (req, res, next) => {
         // Group by Item + Other User
         const threads = {};
         messages.forEach(msg => {
-            const otherUser = msg.sender._id.toString() === req.user.id ? msg.receiver : msg.sender;
+            // Safety checks for populated fields
+            if (!msg.item || !msg.sender || !msg.receiver) return;
+
+            const senderId = msg.sender._id.toString();
+            const receiverId = msg.receiver._id.toString();
+            const currentId = req.user.id.toString();
+
+            const otherUser = senderId === currentId ? msg.receiver : msg.sender;
             const threadId = `${msg.item._id}_${otherUser._id}`;
 
             if (!threads[threadId]) {
@@ -81,11 +91,12 @@ exports.getChatThreads = async (req, res, next) => {
                     otherUser: otherUser,
                     lastMessage: msg.text,
                     timestamp: msg.createdAt,
-                    unread: !msg.read && msg.receiver._id.toString() === req.user.id
+                    unread: !msg.read && receiverId === currentId
                 };
             }
         });
 
+        console.log(`Fetched ${Object.keys(threads).length} chat threads for user ${req.user.id}`);
         res.status(200).json({ success: true, data: Object.values(threads) });
     } catch (err) {
         next(err);

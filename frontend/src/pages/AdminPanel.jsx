@@ -136,7 +136,15 @@ const AdminPanel = () => {
                                         <td className="px-8 py-6">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden">
-                                                    {item.imageUrl && <img src={`${IMAGE_BASE_URL}${item.imageUrl}`} alt="" className="w-full h-full object-cover" />}
+                                                    {(item.images?.length > 0 || item.imageUrl) && (
+                                                        <img
+                                                            src={item.images?.length > 0
+                                                                ? (item.images[0].startsWith('http') ? item.images[0] : `${IMAGE_BASE_URL}${item.images[0]}`)
+                                                                : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl}`)}
+                                                            alt=""
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    )}
                                                 </div>
                                                 <p className="text-sm font-bold text-gray-900">{item.title}</p>
                                             </div>

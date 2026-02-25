@@ -12,8 +12,8 @@ const ReportItem = () => {
         location: '',
         type: 'lost'
     });
-    const [image, setImage] = useState(null);
-    const [preview, setPreview] = useState(null);
+    const [images, setImages] = useState([]);
+    const [previews, setPreviews] = useState([]);
     const [uploading, setUploading] = useState(false);
     const navigate = useNavigate();
 
@@ -22,11 +22,20 @@ const ReportItem = () => {
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            const newImages = [...images, ...files].slice(0, 5);
+            setImages(newImages);
+            const newPreviews = files.map(file => URL.createObjectURL(file));
+            setPreviews([...previews, ...newPreviews].slice(0, 5));
         }
+    };
+
+    const removeImage = (index) => {
+        const newImages = images.filter((_, i) => i !== index);
+        const newPreviews = previews.filter((_, i) => i !== index);
+        setImages(newImages);
+        setPreviews(newPreviews);
     };
 
     const handleSubmit = async (e) => {
@@ -35,14 +44,16 @@ const ReportItem = () => {
 
         try {
             let imageUrl = '';
-            if (image) {
+            let imagesArray = [];
+            if (images.length > 0) {
                 const imgData = new FormData();
-                imgData.append('image', image);
-                const uploadRes = await api.post('/upload', imgData);
-                imageUrl = uploadRes.data.data;
+                images.forEach(img => imgData.append('images', img));
+                const uploadRes = await api.post('/upload/multiple', imgData);
+                imagesArray = uploadRes.data.data;
+                imageUrl = imagesArray[0]; // For backward compatibility
             }
 
-            await api.post('/items', { ...formData, imageUrl });
+            await api.post('/items', { ...formData, imageUrl, images: imagesArray });
             toast.success('Item reported successfully');
             navigate('/dashboard');
         } catch (err) {
@@ -162,25 +173,40 @@ const ReportItem = () => {
                     {/* Image Upload Box */}
                     <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft">
                         <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 px-1">Media Assets</label>
-                        <div className="relative group overflow-hidden bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl aspect-square flex flex-col items-center justify-center cursor-pointer transition-all hover:border-mcc-maroon/50">
-                            {preview ? (
-                                <>
-                                    <img src={preview} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-105" />
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <span className="text-white text-xs font-bold flex items-center gap-2 bg-black/50 px-4 py-2 rounded-full backdrop-blur-md">Change Image</span>
+                        <div className="grid grid-cols-2 gap-4">
+                            {previews.map((prev, index) => (
+                                <div key={index} className="relative group overflow-hidden bg-gray-50 border-2 border-gray-100 rounded-2xl aspect-square">
+                                    <img src={prev} alt={`Preview ${index}`} className="w-full h-full object-cover transition-transform group-hover:scale-105" />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeImage(index)}
+                                        className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                            {previews.length < 5 && (
+                                <div className="relative group overflow-hidden bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl aspect-square flex flex-col items-center justify-center cursor-pointer transition-all hover:border-mcc-maroon/50">
+                                    <div className="flex flex-col items-center text-center p-4">
+                                        <div className="w-10 h-10 bg-white text-mcc-maroon rounded-xl flex items-center justify-center shadow-soft mb-2 group-hover:scale-110 transition-transform">
+                                            <Plus size={24} />
+                                        </div>
+                                        <p className="text-[10px] font-bold text-gray-900">Add Image</p>
                                     </div>
-                                </>
-                            ) : (
-                                <div className="flex flex-col items-center text-center p-6">
-                                    <div className="w-16 h-16 bg-white text-mcc-maroon rounded-2xl flex items-center justify-center shadow-soft mb-4 group-hover:scale-110 transition-transform">
-                                        <ImageIcon size={32} />
-                                    </div>
-                                    <p className="text-sm font-bold text-gray-900 mb-1">Upload Photo</p>
-                                    <p className="text-[10px] text-gray-400 uppercase tracking-widest leading-relaxed">PNG, JPG up to 5MB</p>
+                                    <input
+                                        type="file"
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                        onChange={handleImageChange}
+                                        accept="image/*"
+                                        multiple
+                                    />
                                 </div>
                             )}
-                            <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleImageChange} accept="image/*" />
                         </div>
+                        {previews.length === 0 && (
+                            <p className="text-[10px] text-gray-400 mt-4 text-center italic">Up to 5 images supported</p>
+                        )}
                     </div>
 
                     {/* Submit Actions */}

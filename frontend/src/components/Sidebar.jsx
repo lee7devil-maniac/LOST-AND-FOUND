@@ -75,7 +75,7 @@ const Sidebar = ({ isOpen }) => {
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-red-50 group-hover:bg-white group-hover:shadow-soft transition-all">
                         <LogOut size={20} />
                     </div>
-                    <span className="text-sm uppercase tracking-widest">Terminate</span>
+                    <span className="text-sm uppercase tracking-widest">Logout</span>
                 </button>
             </div>
         </aside>

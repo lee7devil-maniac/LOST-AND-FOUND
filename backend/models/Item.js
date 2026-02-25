@@ -18,6 +18,10 @@ const itemSchema = new mongoose.Schema({
     imageUrl: {
         type: String
     },
+    images: {
+        type: [String],
+        default: []
+    },
     location: {
         type: String,
         required: [true, 'Please provide the location where it was found/lost']

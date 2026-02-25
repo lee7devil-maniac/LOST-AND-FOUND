@@ -17,6 +17,7 @@ const ItemDetails = () => {
     const [claimDesc, setClaimDesc] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [isChatOpen, setIsChatOpen] = useState(false);
+    const [activeImage, setActiveImage] = useState(0);
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -64,11 +65,13 @@ const ItemDetails = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 {/* Left: Visuals */}
                 <div className="space-y-6">
-                    <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-soft overflow-hidden group">
-                        {item.imageUrl ? (
+                    <div className="aspect-square bg-white rounded-[3rem] border border-gray-100 shadow-soft overflow-hidden group relative">
+                        {((item.images && item.images.length > 0) || item.imageUrl) ? (
                             <>
                                 <img
-                                    src={`${IMAGE_BASE_URL}${item.imageUrl}`}
+                                    src={(item.images && item.images.length > 0)
+                                        ? (item.images[activeImage]?.startsWith('http') ? item.images[activeImage] : `${IMAGE_BASE_URL}${item.images[activeImage]}`)
+                                        : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl}`)}
                                     alt=""
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     onError={(e) => {
@@ -88,6 +91,26 @@ const ItemDetails = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Thumbnails */}
+                    {item.images && item.images.length > 1 && (
+                        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                            {item.images.map((img, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveImage(idx)}
+                                    className={`relative w-24 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === idx ? 'border-mcc-maroon ring-4 ring-mcc-maroon/10 scale-95' : 'border-transparent opacity-60 hover:opacity-100'
+                                        }`}
+                                >
+                                    <img
+                                        src={img.startsWith('http') ? img : `${IMAGE_BASE_URL}${img}`}
+                                        className="w-full h-full object-cover"
+                                        alt=""
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Right: Intel */}

@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
@@ -58,14 +59,67 @@ app.use('/api/notifications', require('./routes/notifications'));
 
 // Image upload route
 const upload = require('./middleware/upload');
-app.post('/api/upload', upload.single('image'), (req, res) => {
+const cloudinary = require('./config/cloudinary');
+
+app.post('/api/upload', upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'Please upload a file' });
     }
-    res.status(200).json({
-        success: true,
-        data: `/uploads/${req.file.filename}`
-    });
+
+    try {
+        // Upload to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'mcc_lost_found'
+        });
+
+        // Delete local file
+        fs.unlinkSync(req.file.path);
+
+        res.status(200).json({
+            success: true,
+            data: result.secure_url
+        });
+    } catch (error) {
+        console.error('Cloudinary Upload Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error uploading to cloud storage'
+        });
+    }
+});
+
+app.post('/api/upload/multiple', upload.array('images', 5), async (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).json({ message: 'Please upload at least one file' });
+    }
+
+    try {
+        const uploadPromises = req.files.map(async (file) => {
+            // Upload to Cloudinary
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: 'mcc_lost_found'
+            });
+
+            // Delete local file
+            fs.unlinkSync(file.path);
+
+            return result.secure_url;
+        });
+
+        const urls = await Promise.all(uploadPromises);
+
+        console.log(`Multiple images uploaded: ${urls.length} files`);
+        res.status(200).json({
+            success: true,
+            data: urls
+        });
+    } catch (error) {
+        console.error('Cloudinary Multiple Upload Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error uploading to cloud storage'
+        });
+    }
 });
 
 app.use(errorHandler);

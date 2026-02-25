@@ -52,6 +52,10 @@ exports.updateClaimStatus = async (req, res, next) => {
 
         if (!claim) return res.status(404).json({ message: 'Claim not found' });
 
+        if (!claim.item) {
+            return res.status(400).json({ message: 'Associated item no longer exists' });
+        }
+
         if (claim.item.postedBy.toString() !== req.user.id) {
             return res.status(401).json({ message: 'Unauthorized' });
         }

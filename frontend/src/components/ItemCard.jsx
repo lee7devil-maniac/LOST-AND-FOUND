@@ -8,9 +8,11 @@ const ItemCard = ({ item, onDelete }) => {
         <div className="group relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-2xl hover:shadow-mcc-maroon/10 transition-all duration-500 transform hover:-translate-y-2">
             {/* Image Section */}
             <div className="relative h-56 overflow-hidden">
-                {item.imageUrl ? (
+                {(item.images?.length > 0 || item.imageUrl) ? (
                     <img
-                        src={`${IMAGE_BASE_URL}${item.imageUrl}`}
+                        src={item.images?.length > 0
+                            ? (item.images[0].startsWith('http') ? item.images[0] : `${IMAGE_BASE_URL}${item.images[0]}`)
+                            : (item.imageUrl?.startsWith('http') ? item.imageUrl : `${IMAGE_BASE_URL}${item.imageUrl}`)}
                         alt=""
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
@@ -19,7 +21,7 @@ const ItemCard = ({ item, onDelete }) => {
                         }}
                     />
                 ) : null}
-                <div className={`w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-center px-4 ${item.imageUrl ? 'hidden' : 'flex'}`}>
+                <div className={`w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-center px-4 ${(item.images?.length > 0 || item.imageUrl) ? 'hidden' : 'flex'}`}>
                     <span className="text-gray-400 italic text-[10px] font-bold uppercase tracking-widest">No Preview Intel</span>
                 </div>
 
