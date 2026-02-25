@@ -2,29 +2,44 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 const sendTokenResponse = (user, statusCode, res) => {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE
-    });
+    try {
+        const secret = process.env.JWT_SECRET;
+        const expire = process.env.JWT_EXPIRE || '30d';
+        const cookieExpire = parseInt(process.env.JWT_COOKIE_EXPIRE || '30', 10);
 
-    const options = {
-        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
-        httpOnly: true
-    };
-
-    if (process.env.NODE_ENV === 'production') {
-        options.secure = true;
-    }
-
-    res.status(statusCode).cookie('token', token, options).json({
-        success: true,
-        token,
-        user: {
-            id: user._id,
-            name: user.name,
-            username: user.username,
-            role: user.role
+        if (!secret) {
+            console.error('CRITICAL: JWT_SECRET is not defined in environment variables');
+            return res.status(500).json({ success: false, message: 'Server configuration error (JWT)' });
         }
-    });
+
+        const token = jwt.sign({ id: user._id }, secret, {
+            expiresIn: expire
+        });
+
+        const options = {
+            expires: new Date(Date.now() + cookieExpire * 24 * 60 * 60 * 1000),
+            httpOnly: true
+        };
+
+        if (process.env.NODE_ENV === 'production') {
+            options.secure = true;
+            options.sameSite = 'none'; // Required for cross-site cookies in some browsers
+        }
+
+        res.status(statusCode).cookie('token', token, options).json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                username: user.username,
+                role: user.role
+            }
+        });
+    } catch (err) {
+        console.error('Token Response Error:', err);
+        res.status(500).json({ success: false, message: 'Authentication failure during token generation' });
+    }
 };
 
 exports.register = async (req, res, next) => {
