@@ -14,17 +14,23 @@ dotenv.config();
 // Connect to database
 connectDB();
 
-const app = express();
-
-// Body parser
-app.use(express.json());
-app.use(cookieParser());
-
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
+
+// Set static folder EARLY with robust security headers for ORB/CORS
+// This prevents other middleware or strict Helmet settings from blocking it
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+    setHeaders: (res, path) => {
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+        res.set('X-Content-Type-Options', 'nosniff');
+        res.set('Cache-Control', 'public, max-age=3600');
+    }
+}));
 
 // Enable CORS - Early initialization
 const allowedOrigins = [
@@ -56,17 +62,9 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
-// Set static folder with robust security headers for ORB/CORS
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
-    setHeaders: (res, path) => {
-        res.set('Access-Control-Allow-Origin', '*');
-        res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-        res.set('Cross-Origin-Resource-Policy', 'cross-origin');
-        res.set('X-Content-Type-Options', 'nosniff');
-        // Standard caching
-        res.set('Cache-Control', 'public, max-age=3600');
-    }
-}));
+// Re-add body parser after static
+app.use(express.json());
+app.use(cookieParser());
 
 // Mount routers
 app.use('/api/auth', require('./routes/auth'));

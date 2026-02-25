@@ -21,6 +21,10 @@ const errorHandler = (err, req, res, next) => {
         const message = Object.values(err.errors).map(val => val.message);
         error = { message, statusCode: 400 };
     }
+    // Set security headers to prevent ORB when errors occur cross-origin
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.set('X-Content-Type-Options', 'nosniff');
 
     res.status(error.statusCode || 500).json({
         success: false,
