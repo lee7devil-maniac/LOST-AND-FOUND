@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MapPin, Clock, ShieldCheck, ChevronLeft, Send, AlertCircle, Info, Tag } from 'lucide-react';
+import { MapPin, Clock, ShieldCheck, ChevronLeft, Send, AlertCircle, Info, Tag, MessageSquare } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 import { formatDistanceToNow } from 'date-fns';
 import { IMAGE_BASE_URL } from '../utils/constants';
+import ChatWindow from '../components/ChatWindow';
 
 const ItemDetails = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const ItemDetails = () => {
     const [loading, setLoading] = useState(true);
     const [claimDesc, setClaimDesc] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -98,8 +100,18 @@ const ItemDetails = () => {
 
                     <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-soft space-y-6">
                         <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
-                            <Info size={20} className="text-mcc-maroon" />
-                            <h3 className="font-black uppercase tracking-widest text-xs text-gray-400">Description & Context</h3>
+                            <div className="flex-1 flex items-center gap-3">
+                                <Info size={20} className="text-mcc-maroon" />
+                                <h3 className="font-black uppercase tracking-widest text-xs text-gray-400">Description & Context</h3>
+                            </div>
+                            {!isOwner && user && (
+                                <button
+                                    onClick={() => setIsChatOpen(true)}
+                                    className="px-4 py-2 bg-mcc-maroon/10 text-mcc-maroon rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-mcc-maroon hover:text-white transition-all flex items-center gap-2"
+                                >
+                                    <MessageSquare size={12} /> Contact Owner
+                                </button>
+                            )}
                         </div>
                         <p className="text-gray-600 leading-relaxed font-medium">
                             {item.description}
@@ -142,6 +154,16 @@ const ItemDetails = () => {
                     )}
                 </div>
             </div>
+
+            {/* Chat Window Overlay */}
+            {isChatOpen && (
+                <ChatWindow
+                    itemId={id}
+                    receiverId={item.postedBy?._id || item.postedBy}
+                    receiverName={item.postedBy?.name || 'Item Owner'}
+                    onClose={() => setIsChatOpen(false)}
+                />
+            )}
         </div>
     );
 };

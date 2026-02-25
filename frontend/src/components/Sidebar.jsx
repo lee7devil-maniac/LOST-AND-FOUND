@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, Search, User, History, LogOut, ShieldCheck, Bell } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, Search, User, History, LogOut, ShieldCheck, Bell, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { twMerge } from 'tailwind-merge';
 import { clsx } from 'clsx';
@@ -8,6 +8,7 @@ const menuItems = [
     { icon: Search, label: 'Discovery Hub', path: '/dashboard' },
     { icon: PlusCircle, label: 'Report Item', path: '/report' },
     { icon: History, label: 'Active Claims', path: '/claims' },
+    { icon: MessageSquare, label: 'Conversations', path: '/messages' },
     { icon: User, label: 'My Identity', path: '/profile' },
     { icon: Bell, label: 'My Archives', path: '/my-posts' },
 ];

@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import AdminPanel from './pages/AdminPanel';
 import MyActivity from './pages/MyActivity';
 import Claims from './pages/Claims';
+import MyChats from './pages/MyChats';
 import ItemDetails from './pages/ItemDetails';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -48,6 +49,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/my-posts" element={<MyActivity />} />
             <Route path="/claims" element={<Claims />} />
+            <Route path="/messages" element={<MyChats />} />
             <Route path="/items/:id" element={<ItemDetails />} />
 
 

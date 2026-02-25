@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Bell, User, Search, Menu, X } from 'lucide-react';
+import { Bell, User, Search, Menu, X, MessageSquare } from 'lucide-react';
 import api from '../services/api';
 import NotificationDrawer from './NotificationDrawer';
 
@@ -8,20 +8,27 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     const { user } = useAuth();
     const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [unreadMessages, setUnreadMessages] = useState(0);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
+        const fetchData = async () => {
             if (!user) return;
             try {
-                const { data } = await api.get('/notifications');
-                setNotifications(data.data);
+                // Fetch Notifications
+                const { data: notifData } = await api.get('/notifications');
+                setNotifications(notifData.data);
+
+                // Fetch Chat Threads for unread count
+                const { data: chatData } = await api.get('/messages/threads');
+                const unreadTotal = chatData.data.reduce((acc, thread) => acc + (thread.unread ? 1 : 0), 0);
+                setUnreadMessages(unreadTotal);
             } catch (err) {
-                console.error('Failed to fetch notifications');
+                console.error('Failed to fetch navbar data');
             }
         };
-        fetchNotifications();
-        // Set up polling for new notifications
-        const interval = setInterval(fetchNotifications, 30000);
+        fetchData();
+        // Set up polling
+        const interval = setInterval(fetchData, 30000);
         return () => clearInterval(interval);
     }, [user]);
 
@@ -61,13 +68,25 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
                         </div>
 
                         <div className="flex items-center gap-3">
+                            {/* Chat Badge */}
+                            <button className="relative p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 transition-all group">
+                                <MessageSquare size={20} />
+                                {unreadMessages > 0 && (
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-emerald-500 text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white">
+                                        {unreadMessages}
+                                    </span>
+                                )}
+                            </button>
+
                             <button
                                 onClick={() => setIsNotificationsOpen(true)}
                                 className="relative p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 transition-all group"
                             >
                                 <Bell size={20} />
                                 {unreadCount > 0 && (
-                                    <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-mcc-maroon rounded-full border-2 border-white animate-pulse"></span>
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-mcc-maroon text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white">
+                                        {unreadCount}
+                                    </span>
                                 )}
                             </button>
 
