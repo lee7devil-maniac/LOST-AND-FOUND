@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Bell, User, Search, Menu, X, MessageSquare } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 import NotificationDrawer from './NotificationDrawer';
 
@@ -16,12 +17,14 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
             try {
                 // Fetch Notifications
                 const { data: notifData } = await api.get('/notifications');
-                setNotifications(notifData.data);
+                setNotifications(notifData.data || []);
 
                 // Fetch Chat Threads for unread count
                 const { data: chatData } = await api.get('/messages/threads');
-                const unreadTotal = chatData.data.reduce((acc, thread) => acc + (thread.unread ? 1 : 0), 0);
-                setUnreadMessages(unreadTotal);
+                if (chatData.data) {
+                    const unreadTotal = chatData.data.reduce((acc, thread) => acc + (thread.unread ? 1 : 0), 0);
+                    setUnreadMessages(unreadTotal);
+                }
             } catch (err) {
                 console.error('Failed to fetch navbar data');
             }
@@ -46,14 +49,14 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
                             >
                                 {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
                             </button>
-                            <div className="flex items-center gap-2">
+                            <Link to="/dashboard" className="flex items-center gap-2">
                                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-mcc-maroon rounded-xl flex items-center justify-center text-white font-bold text-lg sm:text-xl shadow-lg shadow-mcc-maroon/20 font-sans">
                                     M
                                 </div>
                                 <span className="text-base sm:text-xl font-bold tracking-tight text-gray-900 line-clamp-1">
                                     MCC <span className="text-mcc-maroon font-black hidden xs:inline">Lost 'n' Found</span>
                                 </span>
-                            </div>
+                            </Link>
                         </div>
 
                         <div className="flex-1 max-w-sm mx-4 hidden md:block">
@@ -69,14 +72,14 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
 
                         <div className="flex items-center gap-2 sm:gap-3">
                             {/* Chat Badge */}
-                            <button className="relative p-2 sm:p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 transition-all group">
+                            <Link to="/messages" className="relative p-2 sm:p-2.5 rounded-xl bg-gray-100 text-gray-500 hover:bg-gray-200 transition-all group">
                                 <MessageSquare size={18} />
                                 {unreadMessages > 0 && (
                                     <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] bg-emerald-500 text-white text-[8px] font-black flex items-center justify-center rounded-full border-2 border-white">
                                         {unreadMessages}
                                     </span>
                                 )}
-                            </button>
+                            </Link>
 
                             <button
                                 onClick={() => setIsNotificationsOpen(true)}
@@ -92,7 +95,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
 
                             <div className="h-6 w-px bg-gray-200 mx-0.5 sm:mx-1 hidden xs:block"></div>
 
-                            <div className="flex items-center gap-2 pl-1">
+                            <Link to="/profile" className="flex items-center gap-2 pl-1 group hover:opacity-80 transition-opacity cursor-pointer">
                                 <div className="text-right hidden sm:block leading-tight">
                                     <p className="text-sm font-black text-gray-900 mb-0.5 truncate max-w-[100px]">{user?.name || 'Session'}</p>
                                     <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-none">{user?.role || 'Guest'}</p>
@@ -102,7 +105,7 @@ const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
                                         <User size={18} className="text-mcc-maroon" />
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </div>
