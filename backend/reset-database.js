@@ -10,6 +10,10 @@ const factoryReset = async () => {
         console.log('--- FACTORY RESET INITIATED ---');
         await connectDB();
 
+        if (mongoose.connection.readyState !== 1) {
+            throw new Error('Database not connected. Please check your MONGO_URI.');
+        }
+
         const collections = Object.keys(mongoose.connection.collections);
 
         for (const collectionName of collections) {

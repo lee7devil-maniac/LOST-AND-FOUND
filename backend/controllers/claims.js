@@ -77,3 +77,17 @@ exports.updateClaimStatus = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.deleteClaim = async (req, res, next) => {
+    try {
+        const claim = await Claim.findById(req.params.id);
+
+        if (!claim) return res.status(404).json({ message: 'Claim not found' });
+
+        await claim.deleteOne();
+
+        res.status(200).json({ success: true, message: 'Claim removed successfully' });
+    } catch (err) {
+        next(err);
+    }
+};
