@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Plus, ChevronLeft, Image as ImageIcon, MapPin, Tag, Info } from 'lucide-react';
+import { Upload, Plus, ChevronLeft, Image as ImageIcon, MapPin, Tag, Info, X } from 'lucide-react';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
 
