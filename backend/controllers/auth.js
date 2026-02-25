@@ -18,13 +18,12 @@ const sendTokenResponse = (user, statusCode, res) => {
 
         const options = {
             expires: new Date(Date.now() + cookieExpire * 24 * 60 * 60 * 1000),
-            httpOnly: true
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            partitioned: process.env.NODE_ENV === 'production'
         };
 
-        if (process.env.NODE_ENV === 'production') {
-            options.secure = true;
-            options.sameSite = 'none'; // Required for cross-site cookies in some browsers
-        }
 
         res.status(statusCode).cookie('token', token, options).json({
             success: true,
@@ -89,7 +88,10 @@ exports.getMe = async (req, res, next) => {
 exports.logout = (req, res, next) => {
     res.cookie('token', 'none', {
         expires: new Date(Date.now() + 10 * 1000),
-        httpOnly: true
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        partitioned: process.env.NODE_ENV === 'production'
     });
     res.status(200).json({ success: true, message: 'Logged out successfully' });
 };

@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
@@ -18,6 +19,10 @@ const app = express();
 // Body parser
 app.use(express.json());
 app.use(cookieParser());
+
+// Set security headers
+app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // Enable CORS
 const allowedOrigins = [
